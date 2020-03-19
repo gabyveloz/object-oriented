@@ -1,5 +1,5 @@
 <?php
-namespace Deepdivedylan\DataDesign;
+namespace GabyVeloz\ObjectOriented;
 /**
  * Trait to Validate a mySQL Date
  *
