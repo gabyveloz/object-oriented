@@ -1,5 +1,5 @@
 <?php
-namespace GabyVeloz\ObjectOriented;
+namespace GabyVeloz/ObjectOriented/php/Classes/ValidateDate.php;
 /**
  * Trait to Validate a mySQL Date
  *

@@ -1,5 +1,5 @@
 <?php
-namespace GabyVeloz\ObjectOriented;
+namespace GabyVeloz/ObjectOriented;
 
 require_once("autoload.php");
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
@@ -7,7 +7,7 @@ require_once(dirname(__DIR__) . "/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 
 
-class author {
+class Author {
 	use ValidateUuid;
 
 	private $authorId;
