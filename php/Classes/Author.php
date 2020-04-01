@@ -23,7 +23,7 @@ class Author {
 	private $authorUsername;
 
 
-	/*
+	/**
 	 * constructor method
 	 */
 	public function __construct($authorId, $authorActivationToken, $authorAvatarUrl = null, $authorEmail, $authorHash, $authorUsername) {
@@ -43,7 +43,7 @@ class Author {
 	}
 
 
-	/*
+	/**
 	 * accessor method for author id
 	 */
 
@@ -51,7 +51,7 @@ class Author {
 		return($this->authorId);
 	}
 
-	/*
+	/**
 	 * mutator method for author id
 	 */
 	public function setAuthorId( $newAuthorId) : void {
@@ -68,7 +68,7 @@ class Author {
 
 
 
-	/*
+	/**
     * accessor method for author activation token
     */
 
@@ -76,7 +76,7 @@ class Author {
 		return($this->authorActivationToken);
 	}
 
-	/*
+	/**
 	 * mutator method for author activation Token
 	 */
 	public function setAuthorActivationToken( $newAuthorActivationToken) : void {
@@ -93,7 +93,7 @@ class Author {
 
 
 
-	/*
+	/**
     * accessor method for Author Avatar Url
     */
 
@@ -101,7 +101,7 @@ class Author {
 		return($this->authorAvatarUrl);
 	}
 
-	/*
+	/**
 	 * mutator method for author avatar url
 	 */
 	public function setAuthorAvatarUrl( $newAuthorAvatarUrl) : void {
@@ -118,7 +118,7 @@ class Author {
 
 
 
-	/*
+	/**
 	 * accessor method for author email
 	 */
 
@@ -126,7 +126,7 @@ class Author {
 		return($this->authorEmail);
 	}
 
-	/*
+	/**
 	 * mutator method for author Email
 	 */
 	public function setAuthorEmail( $newAuthorEmail) : void {
@@ -143,7 +143,7 @@ class Author {
 
 
 
-	/*
+	/**
 	 * accessor method for author Hash
 	 */
 
@@ -151,7 +151,7 @@ class Author {
 		return($this->authorHash);
 	}
 
-	/*
+	/**
 	 * mutator method for author Hash
 	 */
 	public function setAuthorHash( $newAuthorHash) : void {
@@ -168,7 +168,7 @@ class Author {
 
 
 
-	/*
+	/**
 	 * accessor method for author Username
 	 */
 
@@ -176,7 +176,7 @@ class Author {
 		return($this->authorUsername);
 	}
 
-	/*
+	/**
 	 * mutator method for author Username
 	 */
 	public function setAuthorUsername( $newAuthorUsername) : void {
