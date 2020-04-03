@@ -1,5 +1,5 @@
 <?php
-namespace GabyVeloz/ObjectOriented;
+namespace GabyVeloz\ObjectOriented;
 
 require_once("autoload.php");
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
@@ -9,6 +9,7 @@ use Ramsey\Uuid\Uuid;
 
 class Author {
 	use ValidateUuid;
+//These are State Variables//
 
 	private $authorId;
 
@@ -26,7 +27,7 @@ class Author {
 	/**
 	 * constructor method
 	 */
-	public function __construct($authorId, $authorActivationToken, $authorAvatarUrl = null, $authorEmail, $authorHash, $authorUsername) {
+	public function __construct($newAuthorId, $newAuthorActivationToken, $newAuthorAvatarUrl = null, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
 		try {
 			$this->setAuthorId($newAuthorId);
 			$this->setAuthorActivationToke($newAuthorActivationToken);
@@ -34,8 +35,7 @@ class Author {
 			$this->setAuthorEmail($newAuthorEmail);
 			$this->setAuthorHash($newAuthorHash);
 			$this->setAuthorUsername($newAuthorUsername);
-		}
-			//determine what exception type was thrown
+		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -47,14 +47,14 @@ class Author {
 	 * accessor method for author id
 	 */
 
-	public function getAuthorId() : Uuid {
-		return($this->authorId);
+	public function getAuthorId(): Uuid {
+		return ($this->authorId);
 	}
 
 	/**
 	 * mutator method for author id
 	 */
-	public function setAuthorId( $newAuthorId) : void {
+	public function setAuthorId($newAuthorId): void {
 		try {
 			$uuid = self::validateUuid($newAuthorId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -67,19 +67,18 @@ class Author {
 	}
 
 
-
 	/**
-    * accessor method for author activation token
-    */
+	 * accessor method for author activation token
+	 */
 
-	public function getAuthorActivationToken() : Uuid {
-		return($this->authorActivationToken);
+	public function getAuthorActivationToken(): Uuid {
+		return ($this->authorActivationToken);
 	}
 
 	/**
 	 * mutator method for author activation Token
 	 */
-	public function setAuthorActivationToken( $newAuthorActivationToken) : void {
+	public function setAuthorActivationToken($newAuthorActivationToken): void {
 		try {
 			$uuid = self::validateUuid($newAuthorActivationToken);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -92,101 +91,120 @@ class Author {
 	}
 
 
-
 	/**
-    * accessor method for Author Avatar Url
-    */
+	 * accessor method for Author Avatar Url
+	 */
 
-	public function getAuthorAvatarUrl() : Uuid {
-		return($this->authorAvatarUrl);
+	public function getAuthorAvatarUrl(): string {
+		return ($this->authorAvatarUrl);
 	}
 
 	/**
 	 * mutator method for author avatar url
 	 */
-	public function setAuthorAvatarUrl( $newAuthorAvatarUrl) : void {
-		try {
-			$uuid = self::validateUuid($newAuthorAvatarUrl);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+
+
+	public function setAuthorAvatarUrl($newAuthorAvatarUrl): void {
+		// verify the tweet content is secure
+//takes avatar url & trims off spaces//
+
+		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
+		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_VALIDATE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+
+		// verify the avatarurl content will fit in the database
+		if(strlen($newAuthorAvatarUrl) > 255) {
+			throw(new \RangeException("avatar url too large"));
 		}
-
-		// convert and store the author avatar url
-		$this->authorAvatarUrl = $uuid;
 	}
-
-
 
 	/**
 	 * accessor method for author email
 	 */
 
-	public function getAuthorEmail() : Uuid {
-		return($this->authorEmail);
+	public function getAuthorEmail(): string {
+		return ($this->authorEmail);
 	}
 
 	/**
 	 * mutator method for author Email
 	 */
-	public function setAuthorEmail( $newAuthorEmail) : void {
-		try {
-			$uuid = self::validateUuid($newAuthorEmail);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	public function setAuthorEmail($newAuthorEmail): void {
+		// verify the tweet content is secure
+		$newAuthorEmail = trim($newAuthorEmail);
+		$newAuthorEmail = filter_var($newAuthorEmail, FILTER_VALIDATE_EMAIL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newAuthorEmail) === true) {
+			throw(new \InvalidArgumentException("email needs content"));
 		}
 
-		// convert and store the author Email
-		$this->authorEmail = $uuid;
+		// verify the tweet content will fit in the database
+		if(strlen($newAuthorEmail) > 128) {
+			throw(new \RangeException("email too large"));
+		}
+		// store the tweet content
+		$this->authorEmail = $newAuthorEmail;
 	}
-
 
 
 	/**
 	 * accessor method for author Hash
 	 */
 
-	public function getAuthorHash() : Uuid {
-		return($this->authorHash);
+	public function getAuthorHash(): string {
+		return ($this->authorHash);
 	}
 
 	/**
 	 * mutator method for author Hash
 	 */
-	public function setAuthorHash( $newAuthorHash) : void {
-		try {
-			$uuid = self::validateUuid($newAuthorHash);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	public function setAuthorHash(string $newAuthorHash): void {
+		//enforce that the hash is properly formatted
+		$newAuthorHash = trim($newAuthorHash);
+		if(empty($newAuthorHash) === true) {
+			throw(new \InvalidArgumentException("author password hash empty or insecure"));
 		}
+		//enforce the hash is really an Argon hash
+		$authorHashInfo = password_get_info($newAuthorHash);
+		if($authorHashInfo["algoName"] !== "argon2i") {
+			throw(new \InvalidArgumentException("profile hash is not a valid hash"));
 
-		// convert and store the author Hash
-		$this->authorHash = $uuid;
+		}
+		//enforce that the hash is exactly 97 characters.
+		if(strlen($newAuthorHash) > 97) {
+			throw(new \RangeException("email too large"));
+		}
+		//store the hash
+		$this->authorHash = $newAuthorHash;
+
 	}
-
 
 
 	/**
 	 * accessor method for author Username
 	 */
 
-	public function getAuthorUsername() : Uuid {
-		return($this->authorUsername);
+	public function getAuthorUsername(): string {
+		return ($this->authorUsername);
 	}
 
 	/**
 	 * mutator method for author Username
 	 */
-	public function setAuthorUsername( $newAuthorUsername) : void {
-		try {
-			$uuid = self::validateUuid($newAuthorUsername);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	public function setNewAuthorUsername(string $newAuthorUsername): void {
+		// verify the at handle is secure
+		$newAuthorUsername = trim($newAuthorUsername);
+		$newAuthorUsername = filter_var($newAuthorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newAuthorUsername) === true) {
+			throw(new \InvalidArgumentException("username is empty or insecure"));
+		}
+		// verify the at handle will fit in the database
+
+		if(strlen($newAuthorUsername) > 32) {
+			throw(new \RangeException("username is too large"));
 		}
 
-		// convert and store the author Username
-		$this->authorUsername = $uuid;
+		// store the at handle
+		$this->authorUsername = $newAuthorUsername;
+
 	}
+}
