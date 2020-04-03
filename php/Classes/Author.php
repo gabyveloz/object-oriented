@@ -30,8 +30,8 @@ class Author {
 	public function __construct($newAuthorId, $newAuthorActivationToken, $newAuthorAvatarUrl = null, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
 		try {
 			$this->setAuthorId($newAuthorId);
-			$this->setAuthorActivationToke($newAuthorActivationToken);
-			$this->setAuthorAvatarUr($newAuthorAvatarUrl);
+			$this->setAuthorActivationToken($newAuthorActivationToken);
+			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
 			$this->setAuthorEmail($newAuthorEmail);
 			$this->setAuthorHash($newAuthorHash);
 			$this->setAuthorUsername($newAuthorUsername);
@@ -164,11 +164,13 @@ class Author {
 			throw(new \InvalidArgumentException("author password hash empty or insecure"));
 		}
 		//enforce the hash is really an Argon hash
+		/*
 		$authorHashInfo = password_get_info($newAuthorHash);
 		if($authorHashInfo["algoName"] !== "argon2i") {
 			throw(new \InvalidArgumentException("profile hash is not a valid hash"));
 
 		}
+		*/
 		//enforce that the hash is exactly 97 characters.
 		if(strlen($newAuthorHash) > 97) {
 			throw(new \RangeException("email too large"));
@@ -190,7 +192,7 @@ class Author {
 	/**
 	 * mutator method for author Username
 	 */
-	public function setNewAuthorUsername(string $newAuthorUsername): void {
+	public function setAuthorUsername(string $newAuthorUsername): void {
 		// verify the at handle is secure
 		$newAuthorUsername = trim($newAuthorUsername);
 		$newAuthorUsername = filter_var($newAuthorUsername, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
