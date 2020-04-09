@@ -7,27 +7,68 @@ require_once(dirname(__DIR__) . "/vendor/autoload.php");
 use Ramsey\Uuid\Uuid;
 
 
-class Author {
+class Author implements \JsonSerializable {
 	use ValidateUuid;
-//These are State Variables//
 
+	/**
+	 * Id for this author
+	 * @var Uuid $authorId
+	 */
 	private $authorId;
 
+	/**
+	 * activation token for this Author
+	 * @var string $authorActivationToken
+	 */
 	private $authorActivationToken;
 
+	/**
+	 * avatar for this author
+	 * @var string $authorAvatarUrl
+	 */
 	private $authorAvatarUrl;
 
+	/**
+	 * email for this author
+	 * @var string $authorEmail
+	 */
 	private $authorEmail;
 
+	/**
+	 * hash for this author
+	 * @var string $authorHash
+	 */
 	private $authorHash;
 
+	/**
+	 * username for this author
+	 * @var string $authorUsername
+	 */
 	private $authorUsername;
+	/**
+	 * @var string|null
+	 */
+	private $AuthorActivationToken;
 
 
 	/**
-	 * constructor method
+	 * constructor for this Author
+	 * @param string|Uuid $newAuthorId if of this Author or null if a new Author
+	 * @param string $newAuthorActivationToken activation token to safe guard against malicious accounts
+	 * @param string $newAuthorAvatarUrl string containing an avatar url or null
+	 * @param string $newAuthorEmail string containing email
+	 * @param string $newAuthorHash string containing a password hash
+	 * @param string $newAuthorUsername string containing username
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 */
-	public function __construct($newAuthorId, $newAuthorActivationToken, $newAuthorAvatarUrl = null, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
+
+
+	public function __construct($newAuthorId, string $newAuthorActivationToken, ?string $newAuthorAvatarUrl,
+										 string $newAuthorEmail, string $newAuthorHash, string $newAuthorUsername) {
 		try {
 			$this->setAuthorId($newAuthorId);
 			$this->setAuthorActivationToken($newAuthorActivationToken);
@@ -36,7 +77,8 @@ class Author {
 			$this->setAuthorHash($newAuthorHash);
 			$this->setAuthorUsername($newAuthorUsername);
 		} //determine what exception type was thrown
-		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		catch
+		(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -45,50 +87,58 @@ class Author {
 
 	/**
 	 * accessor method for author id
+	 * @return Uuid value of author id
 	 */
-
 	public function getAuthorId(): Uuid {
-		return ($this->authorId);
-	}
+	return ($this->authorId);
+}
 
 	/**
 	 * mutator method for author id
+	 *
+	 * @param Uuid|string $newAuthorId new value of author id
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if #newAuthorId is out of range
+	 * @throws \TypeError if $newAuthorId is not a uuid or string
 	 */
 	public function setAuthorId($newAuthorId): void {
-		try {
-			$uuid = self::validateUuid($newAuthorId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-
-		// convert and store the author id
-		$this->authorId = $uuid;
+	try {
+		$Uuid = self::validateUuid($newAuthorId);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
+	// convert and store the author id
+	$this->authorId = $Uuid;
+}
 
 
 	/**
 	 * accessor method for author activation token
+	 * @return string value of activations token
 	 */
-
-	public function getAuthorActivationToken(): Uuid {
-		return ($this->authorActivationToken);
-	}
+	public function getAuthorActivationToken(): ?string {
+	return ($this->authorActivationToken);
+}
 
 	/**
 	 * mutator method for author activation Token
+	 * @param string $newAuthorActivationToken
+	 * @throws \InvalidArgumentException if the token is not a string or insecure
+	 * @throws \RangeException if the token is not exactly 32 characters
+	 * @throws \TypeError if the activation token is not a string
 	 */
-	public function setAuthorActivationToken($newAuthorActivationToken): void {
-		try {
-			$uuid = self::validateUuid($newAuthorActivationToken);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
+	public function setAuthorActivationToken(?string $newAuthorActivationToken): void {
 
-		// convert and store the author activation token
-		$this->authorActivationToken = $uuid;
+		try {
+		$uuid = self::validateUuid($newAuthorActivationToken);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
+
+	// convert and store the author activation token
+	$this->AuthorActivationToken = $newAuthorActivationToken;
 
 
 	/**
@@ -348,5 +398,18 @@ class Author {
 		return ($authors);
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public function jsonSerialize() {
+		// TODO: Implement jsonSerialize() method.
+	}
 }
+
+	/**
+	 * @inheritDoc
+	 */
+	public function jsonSerialize() {
+		// TODO: Implement jsonSerialize() method.
+	}
 
