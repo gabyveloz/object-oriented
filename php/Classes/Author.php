@@ -129,17 +129,18 @@ class Author implements \JsonSerializable {
 	 * @throws \TypeError if the activation token is not a string
 	 */
 	public function setAuthorActivationToken(?string $newAuthorActivationToken): void {
-
+/*
 		try {
-		$uuid = self::validateUuid($newAuthorActivationToken);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+			$uuid = self::validateUuid($newAuthorActivationToken);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+*/
+
+		// convert and store the author activation token
+		$this->AuthorActivationToken = $newAuthorActivationToken;
 	}
-
-	// convert and store the author activation token
-	$this->AuthorActivationToken = $newAuthorActivationToken;
-
 
 	/**
 	 * accessor method for Author Avatar Url
@@ -167,6 +168,7 @@ class Author implements \JsonSerializable {
 			throw(new \RangeException("avatar url too large"));
 		}
 	}
+
 
 	/**
 	 * accessor method for author email
@@ -405,11 +407,3 @@ class Author implements \JsonSerializable {
 		// TODO: Implement jsonSerialize() method.
 	}
 }
-
-	/**
-	 * @inheritDoc
-	 */
-	public function jsonSerialize() {
-		// TODO: Implement jsonSerialize() method.
-	}
-

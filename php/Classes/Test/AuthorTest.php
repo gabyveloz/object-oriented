@@ -32,11 +32,11 @@ class AuthorTest extends DataDesignTest {
 
 		//insert ab author record in db
 		$authorId = generateUuidV4()->toString();
-		$author = new Author($authorId, $this->VALID_ACTIVATION_TOKEN, $this->VALID_AVATAR_URL, $this->VALID_AUTHOR_HASH, $this->VALID_AUTHOR_EMAIL, $this->VALID_USERNAME);
+		$author = new Author($authorId, $this->VALID_ACTIVATION_TOKEN, $this->VALID_AVATAR_URL, $this->VALID_AUTHOR_EMAIL, $this->VALID_AUTHOR_HASH, $this->VALID_USERNAME);
 		$author->insert($this->getPDO());
 
 		//check count of author records in the db after the insert
-		$numRows = $this->getConnection()->getRowCount("author");
+		$numRowsAfterInsert = $this->getConnection()->getRowCount("author");
 		self::assertEquals($numRows + 1, $numRowsAfterInsert);
 
 
@@ -48,6 +48,7 @@ class AuthorTest extends DataDesignTest {
 	public function testUpdateValidAuthor() :void{
 
 	}
+
 	public function tesDeletetValidAuthor() :void{
 
 	}
